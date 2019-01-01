@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .mobile-width-3{
+            height:800px !important;
+            background:url('./../图片素材/手机/苹果/iphone4s.png') no-repeat;
+            transition:all 0.5s ease 0s;
+        }
+        #iframe-wrap{
+            position:relative;
+            overflow:visible;
+            top:54px;
+            z-index:30;
+        }
+        .mobile-width-2{
+            height:1000px !important;
+            background:url('./../图片素材/平板/ipadw.png') no-repeat 0 0;
+            transition:all 0.5s ease 0s;
+        }
+    </style>
+</head>
+<body>
+    <div id="iframe-wrap" class="mobile-width-3">
+
+    </div>
+    <script>
+        (function(){
+            let wrap = document.getElementById('iframe-wrap')
+            wrap.onclick = function(){
+                wrap.className = 'mobile-width-2'
+            }
+        })()
+    </script>
+</body>
+</html>

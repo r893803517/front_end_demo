@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Radial Slider</title>
+    <!-- js -->
+    <script src="./../jquery/jquery-2.2.3.min.js"></script> 
+    <!-- //js -->
+
+    <style>
+        html{color:#000;background:#FFF;}   
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,   
+        fieldset,input,textarea,p,blockquote,th,td {   
+        margin:0;   
+        padding:0;   
+        }   
+    
+    </style>
+    <style>
+        .rb-radial-slider-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden
+        }
+        .rb-radial-slider-wrapper ul {
+            list-style: none;
+        }
+        .rb-radial-slider > li {
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            opacity:0;
+            transition: transfrom .2s, -webkit-transform .2s;
+            /* 在IE11下隐藏滚动条 */
+            overflow: hidden;
+        }
+        .rb-radial-slider > li.visible {
+            position:relative;
+            opacity:1;
+        }
+        .rb-radial-slider > li.is-animating, 
+        .rb-radial-slider > li.prev-slide, 
+        .rb-radial-slider > li.next-slide {
+            opacity:1;
+        }
+        .rb-radial-slider > li.is-animating {
+            z-index:2 ;
+        }
+        .rb-radial-slider > li.scale-down,
+        .rb-radial-slider > li.move-up {
+            z-index:3;
+        }
+        .rb-radial-slider > li.move-up {
+            /* 点击时向轮播图中的圆形元素添加本类，实现类似popSpring效果*/
+            
+            animation: rb-clicked .2s;
+        }
+        .rb-radial-slider > li.scale-down {
+            /* 向另一个圆形元素添加本类，实现缩小效果 */
+    
+            transform: scale(0);
+        }
+        .rb-radial-slider > li.prev-slide image, 
+        .rb-radial-slider > li.next-slide image {
+            /* 确保图片能够显示 */
+            z-index: 3;
+        }
+        .rb-radial-slider > li.next-slide {
+            transform-origin: 92.14% 50%;
+        }
+        .rb-radial-slider > li.prev-slide {
+            transform-origin: 7.86% 50%;
+        }
+        .rb-radial-slider .svg-wrapper {
+            position:relative;
+            z-index:1;
+            /* using padding hack to fix bug on IE - svg height not property calculated */
+            height:0;
+            padding-bottom: 57.15%;
+        }
+        .rb-radial-slider li.prev-slide .svg-wrapper,
+        .rb-radial-slider li.next-slide .svg-wrapper {
+            z-index:2;
+        }
+         .rb-raidal-slider-wrapper svg {
+            position:absolute;
+            z-index:1;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+        }
+
+        .rb-round-mask{
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index:0;
+        }
+  
+        /*----------------
+        
+        轮播图按钮
+
+        -----------------*/
+        .rb-radial-slider-navigation li{
+            position: absolute;
+            z-index: 6;
+            right: 3.58%;
+            top: 42.5%;
+            height: 15%;
+            width: 8.57%;
+        }
+        
+        .rb-radial-slider-navigation li a{
+            display: block;
+            height: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            color: transparent;
+            transition: transform .2s;
+            position: relative
+        }
+        .rb-radial-slider-navigation li a:hover{
+            transform: scale(1.1)
+        }
+        
+        .rb-radial-slider-navigation li a::after{
+            content: "\f105";
+            /* font: normal normal normal 14px/1 FontAwesome; */
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 4em;
+            color: #fff;
+        }
+
+        .rb-radial-slider-navigation li:last-of-type a::after{
+            content: "\f104";
+        }
+
+        .rb-radial-slider-navigation li:last-of-type{
+            left: 3.58%;
+            right: auto;
+        }
+
+        @keyframes rb-clicked{
+            0%, 100%{
+                transform: scale(1)
+            }
+            50%{
+                transform: scale(0.9)
+            }
+        }
+    </style>
+   
+</head>
+<body>
+    <div class="rb-radial-slider-wrapper">
+        <ul class="rb-radial-slider" data-radius1="60" data-radius2="1364" data-centerx1="110" data-centerx2="1290">
+            <li class="visible">
+                <div class="svg-wrapper">
+                    <svg viewBox="0 0 1400 800">
+                        <defs>
+                            <clipPath id="rb-image-1">
+                                <circle id = "rb-circle-1" cx="110" cy="400" r="1364"/>
+                            </clipPath>
+                        </defs>
+                        <image height="800px" width="1400px" clip-path="url(#rb-image-1)" href="images/1.jpg"></image>
+                    </svg>
+                </div>
+            </li>
+            <li class="next-slide">
+                <div class="svg-wrapper">
+                    <svg viewBox="0 0 1400 800">
+                        <defs>
+                            <clipPath id="rb-image-2">
+                                <circle id = "rb-circle-2" cx="1290" cy="400" r="60"/>
+                            </clipPath>
+                        </defs>
+                        <image height="800px" width="1400px" clip-path="url(#rb-image-2)" href="images/2.jpg"></image>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <div class="svg-wrapper">
+                    <svg viewBox="0 0 1400 800">
+                        <defs>
+                            <clipPath id="rb-image-3">
+                                <circle id = "rb-circle-3" cx="110" cy="400" r="60"/>
+                            </clipPath>
+                        </defs>
+                        <image height="800px" width="1400px" clip-path="url(#rb-image-3)" href="images/1.jpg"></image>
+                    </svg>
+                </div>
+            </li>
+            <li class="prev-slide">
+                <div class="svg-wrapper">
+                    <svg viewBox="0 0 1400 800">
+                        <defs>
+                            <clipPath id="rb-image-4">
+                                <circle id = "rb-circle-4" cx="110" cy="400" r="60"/>
+                            </clipPath>
+                        </defs>
+                        <image height="800px" width="1400px" clip-path="url(#rb-image-4)" href="images/2.jpg"></image>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <div class="svg-wrapper">
+                    <svg viewBox="0 0 1400 800">
+                        <defs>
+                            <clipPath id="rb-image-5">
+                                <circle id = "rb-circle-5" cx="110" cy="400" r="60"/>
+                            </clipPath>
+                        </defs>
+                        <image height="800px" width="1400px" clip-path="url(#rb-image-5)" href="images/3.jpg"></image>
+                    </svg>
+                </div>
+            </li>
+        </ul>
+        <!-- 图片切换按钮 -->
+        <ul class="rb-radial-slider-navigation">
+            <li>
+                <a href="#0" id="next" class="next">Next</a>
+            </li>
+            <li>
+                <a href="#0" id="prev" class="prev">Prev</a>
+            </li>
+        </ul>
+    </div>
+    <!-- //search jQuery --> 
+	<script src="./../snap.svg/snap.svg-min.js"></script>
+    <script src="main.js"></script> 
+    <!-- <script src="origin.js"></script>  -->
+    <!-- Resource jQuery -->   
+</body>
+</html>
+

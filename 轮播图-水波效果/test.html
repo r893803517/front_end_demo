@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./../jquery/jquery-2.2.3.min.js"></script>
+    <script src="./../snap.svg/snap.svg-min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .radial-slider-wrapper {
+            position: relative;
+            width: 100%;
+            /* overflow: hidden; */
+        }
+
+        .radial-slider>li {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            transition: transform .2s;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .radial-slider>li.current-slide{
+           z-index: 1;
+           opacity: 1;
+        }
+
+        .radial-slider>li.next-slide,
+        .radial-slider>li.prev-slide{
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .radial-slider-wrapper .radial-navigation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index:3;
+        }
+
+        .radial-slider>li.is-animating {
+            opacity: 1;
+            z-index: 2;
+        }
+
+    </style>
+    <!-- <style>
+        /* -- Slider -- */
+        .rb-radial-slider-wrapper {
+            position: relative;
+            width: 100%;  
+            overflow: hidden;
+        }
+        .rb-radial-slider-wrapper ul { 
+            list-style: none;
+        }
+        .rb-radial-slider > li {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        -webkit-transition: -webkit-transform .2s;
+        transition: -webkit-transform .2s;
+        -moz-transition: transform .2s;
+        -o-transition: transform .2s;
+        -ms-transition: transform .2s; 
+        transition: transform .2s, -webkit-transform .2s; 
+        /* hide vertical scrollbar on IE11 */
+        overflow: hidden;
+        }
+        .rb-radial-slider > li.visible {
+            position: relative;
+            opacity: 1;
+        }
+        .rb-radial-slider > li.is-animating, 
+        .rb-radial-slider > li.prev-slide, 
+        .rb-radial-slider > li.next-slide {
+            opacity: 1;
+        }
+        .rb-radial-slider > li.is-animating {
+            z-index: 2;
+        }
+        .rb-radial-slider > li.scale-down,
+        .rb-radial-slider > li.move-up {
+            z-index: 3;
+        }
+        .rb-radial-slider > li.move-up {
+            /* class added to the navigation round element when clicked - used to create the click effect */
+            -webkit-animation: rb-clicked .2s;
+            -moz-animation: rb-clicked .2s;
+            -o-animation: rb-clicked .2s;
+            -ms-animation: rb-clicked .2s;
+            animation: rb-clicked .2s;
+        }
+        .rb-radial-slider > li.scale-down {
+            /* class added to the navigation round element to create the scale down effect  */
+            -webkit-transform: scale(0);
+            -moz-transform: scale(0);
+            -o-transform: scale(0);
+            -ms-transform: scale(0);
+            transform: scale(0);
+        }
+        .rb-radial-slider > li.prev-slide image, 
+        .rb-radial-slider > li.next-slide image {
+            /* make sure the prev/next round elements are visible */
+            z-index: 3;
+        }
+        .rb-radial-slider > li.next-slide {
+            /* for the scale-down/click effect - change the transform origin so that it is the center of the navigation round element */
+            -webkit-transform-origin: 92.14% 50%;
+            -moz-transform-origin: 92.14% 50%;
+            -ms-transform-origin: 92.14% 50%;
+            transform-origin: 92.14% 50%;
+        }
+        .rb-radial-slider > li.prev-slide {
+            -webkit-transform-origin: 7.86% 50%;
+            -moz-transform-origin: 7.86% 50%;
+            -o-transform-origin: 7.86% 50%; 
+            -ms-transform-origin: 7.86% 50%;
+            transform-origin: 7.86% 50%;
+        }
+        .rb-radial-slider .svg-wrapper {
+            position: relative;
+            z-index: 1;
+            /* using padding Hack to fix bug on IE - svg height not properly calculated */
+            height: 0;
+            padding-bottom: 57.15%;
+        }
+        .rb-radial-slider li.prev-slide .svg-wrapper,
+        .rb-radial-slider li.next-slide .svg-wrapper {
+            /* change its z-index so that it's always below the .rb-radial-slider-content */
+            z-index: 2;
+        }
+        .rb-radial-slider-wrapper svg {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style> -->
+</head>
+
+<body>
+    <div class="radial-slider-wrapper">
+        <ul class="radial-slider" data-currentIndex="2">
+            <li class="current-slide" data-min-radius="60" data-max-radius="1364" data-next-circle-x = "1290" data-prev-circle-x = "110">
+                <svg viewBox="0 0 1400 800">
+                    <defs>
+                        <clipPath id="clip1">
+                            <circle id="circle1" cx="110" cy="400" r="1364"></circle>
+                        </clipPath>
+                    </defs>
+                    <image height="800px" width="1400px" clip-path="url(#clip1)" href="images/1.jpg"></image>
+                </svg>
+            </li>
+            <li class="next-slide">
+                <svg viewBox="0 0 1400 800">
+                    <defs>
+                        <clipPath id="clip2">
+                            <circle id="circle2" cx="1290" cy="400" r="60"></circle>
+                        </clipPath>
+                    </defs>
+                    <image height="800px" width="1400px" clip-path="url(#clip2)" href="images/2.jpg"></image>
+                </svg>
+            </li>
+            <li class="prev-slide">
+                <svg viewBox="0 0 1400 800">
+                    <defs>
+                        <clipPath id="clip3">
+                            <circle id="circle3" cx="110" cy="400" r="60"></circle>
+                        </clipPath>
+                    </defs>
+                    <image height="800px" width="1400px" clip-path="url(#clip3)" href="images/3.jpg"></image>
+                </svg>
+            </li>
+        </ul>
+        <ul class="radial-navigation">
+            <li>
+                <a href="#" class="prev">Prev</a>
+            </li>
+            <li>
+                <a href="#" class="next">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        jQuery().ready(function ($) {
+
+            const duration = 400,
+            epsilon = (1000 / 60 / duration) / 3,
+            customMinaAnimation = bezier(.42, .03, .77, .63, epsilon);
+
+
+            let radialSlider = function (domElement) {
+                this.isAnimating = false 
+                this.element = domElement
+                this.slider = this.element.find('.radial-slider')
+                this.slides = this.slider.children('li')
+                this.slidesNum = this.slides.length
+                this.navigation = this.element.find('.radial-navigation')
+                this.currentIndex = 0
+                this.nextIndex = 1
+                this.prevIndex = this.slidesNum - 1
+                this.bindEvents()
+            }
+
+            radialSlider.prototype.bindEvents = function () {
+                let self = this
+                self.navigation.children('li').each(function () {
+
+                    $(this).on('click', function (event) {
+                        if (!self.isAnimating) {    //检测动画是否正在播放，防止多次触发 
+                            self.isAnimating = true
+                            event.preventDefault()
+                            console.log($(event.target).attr('class'))
+                            let direction = ($(event.target).hasClass('next')) ? 'next' : 'prev'
+                            self.updateIndex(direction)
+                            console.log([self.prevIndex, self.currentIndex, self.nextIndex])
+                            self.updateSlides(direction)
+                        }
+                    })
+
+                })
+            }
+
+            radialSlider.prototype.updateIndex = function (direction) {
+                if (direction == 'next') {
+                    this.prevIndex = this.currentIndex
+                    this.currentIndex = this.nextIndex
+                    this.nextIndex = this.nextIndex + 1 < this.slidesNum ? this.nextIndex + 1 : 0
+                } else {
+                    this.nextIndex = this.currentIndex
+                    this.currentIndex = this.prevIndex
+                    this.prevIndex = this.prevIndex - 1 >= 0 ? this.prevIndex - 1 : this.slidesNum - 1
+                }
+            }
+
+            /* 更新轮播图 具体流程如下：
+                1.将鼠标点击的原本的圆形裁剪图层级调低
+                2.更新圆形裁剪图（覆盖原本的圆形裁剪图）,并添加popSpring效果
+                3.为另一个圆形裁剪图添加缩小效果
+                4.为原本的圆形裁剪图添加水波扩散的动画效果
+                5.在动画效果结束后的回调函数中更新另一个圆形裁剪图（覆盖原本的圆形裁剪图），并移除缩小效果
+            */
+            radialSlider.prototype.updateSlides = function (direction) {
+
+                let next = (direction == 'next')?true:false
+
+                let currentClipPath = Snap('#'+this.slides.eq(this.currentIndex).find('circle').attr('id')),
+                prevClipPath = Snap('#'+this.slides.eq(this.prevIndex).find('circle').attr('id')),
+                nextClipPath = Snap('#'+this.slides.eq(this.nextIndex).find('circle').attr('id'))
+                
+                let prevCenterx = this.slides.data('prev-circle-x'),
+                nextCenterx = this.slides.data('next-circle-x')
+
+                let minRadius = this.slides.data('min-radius'),
+                maxRadius = this.slides.data('max-radius')
+                
+                console.log([ minRadius,maxRadius,prevCenterx,nextCenterx])
+                let currentCenterx = null
+
+               
+                this.slides.eq(this.currentIndex).removeClass('prev-slide next-slide').addClass('is-animating')
+
+                if (next) {
+                    nextClipPath.attr({
+                        'r': minRadius,
+                        'cx':nextCenterx
+                    })
+                    
+                    this.slides.eq(this.nextIndex).addClass('next-slide move-up')
+                    this.slides.filter('.prev-slide').addClass('scale-down')
+                    currentCenterx = nextCenterx
+                } else {
+                    prevClipPath.attr({
+                        'r': minRadius,
+                        'cx': prevCenterx
+                    })
+                    this.slides.eq(this.prevIndex).addClass('prev-slide move-up')
+                    this.slides.filter('.next-slide').addClass('scale-down')
+                    currentCenterx = prevCenterx
+                }
+
+                let self = this
+                currentClipPath.attr({
+                    'r': minRadius,
+                    'cx': currentCenterx
+                }).animate( {'r': maxRadius}, duration, customMinaAnimation, function(){
+                    if(next){
+                        self.slides.filter('.prev-slide').removeClass('prev-slide scale-down')
+                        prevClipPath.attr({
+                            'r': minRadius,
+                            'cx': prevCenterx
+                        })
+                        self.slides.eq(self.prevIndex).removeClass('current-slide').addClass('prev-slide')
+
+                    }else{
+                        self.slides.filter('.next-slide').removeClass('next-slide scale-down')
+                        nextClipPath.attr({
+                            'r': minRadius,
+                            'cx': nextCenterx
+                        })
+                        self.slides.eq(self.nextIndex).removeClass('current-slide').addClass('next-slide')
+                    }
+                    self.slides.eq(self.currentIndex).removeClass('is-animating').addClass('current-slide')
+                    self.slides.filter('move-up').removeClass('move-up')
+
+                    setTimeout(function(){
+                        self.isAnimating = false;
+                    },100)
+                })
+            
+            }
+            $(".radial-slider-wrapper").each(function () {
+                let slider = new radialSlider($(this))
+            })
+
+        /*
+            convert a cubic bezier value to a custom mina easing
+            http://stackoverflow.com/questions/25265197/how-to-convert-a-cubic-bezier-value-to-a-custom-mina-easing-snap-svg
+        */
+        function bezier(x1, y1, x2, y2, epsilon) {
+            //https://github.com/arian/cubic-bezier
+            var curveX = function (t) {
+                var v = 1 - t;
+                return 3 * v * v * t * x1 + 3 * v * t * t * x2 + t * t * t;
+            };
+
+            var curveY = function (t) {
+                var v = 1 - t;
+                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;
+            };
+
+            var derivativeCurveX = function (t) {
+                var v = 1 - t;
+                return 3 * (2 * (t - 1) * t + v * v) * x1 + 3 * (- t * t * t + 2 * v * t) * x2;
+            };
+
+            return function (t) {
+
+                var x = t, t0, t1, t2, x2, d2, i;
+
+                // First try a few iterations of Newton's method -- normally very fast.
+                for (t2 = x, i = 0; i < 8; i++) {
+                    x2 = curveX(t2) - x;
+                    if (Math.abs(x2) < epsilon) return curveY(t2);
+                    d2 = derivativeCurveX(t2);
+                    if (Math.abs(d2) < 1e-6) break;
+                    t2 = t2 - x2 / d2;
+                }
+
+                t0 = 0, t1 = 1, t2 = x;
+
+                if (t2 < t0) return curveY(t0);
+                if (t2 > t1) return curveY(t1);
+
+                // Fallback to the bisection method for reliability.
+                while (t0 < t1) {
+                    x2 = curveX(t2);
+                    if (Math.abs(x2 - x) < epsilon) return curveY(t2);
+                    if (x > x2) t0 = t2;
+                    else t1 = t2;
+                    t2 = (t1 - t0) * .5 + t0;
+                }
+
+                // Failure
+                return curveY(t2);
+
+            };
+        };
+    })
+
+            
+
+    </script>
+</body>
+
+</html>
