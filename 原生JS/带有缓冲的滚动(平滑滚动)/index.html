@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <input id="offset" type="number"> 
+    <button onclick="handelScrollTo()">click here scroll to somewhere</button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <script>
+        let scrolling = false  
+        let normalSpeedRate = 25  //距离除以此比率得到移动速度，所以比率约大速度越小
+        let fasterSpeedRate = 15
+
+        function scrollWithCushion(scrollY){
+            if(!scrolling){
+                scrolling = true
+                let scrollInterval = setInterval(function(){
+                   
+                    let distance =  window.scrollY - scrollY
+                    console.log(distance)
+                    let speedRate = normalSpeedRate
+                    if( Math.abs(distance) <= 5 ){  //误差消除
+                        window.scrollTo(0,scrollY)
+                        clearInterval(scrollInterval)   //终止移动
+                        scrolling = false    //重置标志位
+                    }else{
+                        if(Math.abs(distance) > 400){
+                            speedRate = fasterSpeedRate
+                        }
+                        let speed = Math.round(distance/speedRate)
+                        if(speed === 0){
+                            speed = distance > 0 ? speed = 1 : speed = -1
+                        }
+                        let target = window.scrollY - speed 
+                        window.scrollTo(0,target)
+                    }   
+                },10)
+            }
+        }
+        function handelScrollTo(){
+            let scrollY = document.getElementById('offset').value
+            console.log(scrollY)
+            scrollWithCushion(scrollY)
+        }
+    </script>
+</body>
+</html>
